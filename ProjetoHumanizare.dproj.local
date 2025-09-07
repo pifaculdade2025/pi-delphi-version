@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2025/09/03 22:55:54.000.641,=C:\Projeto integrador\Unit1.pas</Transaction>
+    <Transaction>2025/09/03 22:56:44.000.925,C:\Projeto integrador\Unit1.pas=C:\Projeto integrador\2 Semestre\Un.pas</Transaction>
+    <Transaction>2025/09/03 22:56:44.000.925,C:\Projeto integrador\Unit1.dfm=C:\Projeto integrador\2 Semestre\Un.dfm</Transaction>
+    <Transaction>2025/09/03 22:57:21.000.915,C:\Projeto integrador\2 Semestre\Un.dfm=C:\Projeto integrador\2 Semestre\UnPrincipal.dfm</Transaction>
+    <Transaction>2025/09/03 22:57:21.000.915,C:\Projeto integrador\2 Semestre\Un.pas=C:\Projeto integrador\2 Semestre\UnPrincipal.pas</Transaction>
+    <Transaction>2025/09/03 23:01:42.000.662,C:\Projeto integrador\Project1.dproj=C:\Projeto integrador\ProjetoHumanizare.dproj</Transaction>
+    <Transaction>2025/09/03 23:02:06.000.285,C:\Projeto integrador\ProjetoHumanizare.dproj=C:\Projeto integrador\2 Semestre\ProjetoHumanizare.dproj</Transaction>
+    <Transaction>2025/09/04 22:24:58.000.667,=C:\Projeto integrador\2 Semestre\Unit1.pas</Transaction>
+    <Transaction>2025/09/04 22:26:05.000.179,C:\Projeto integrador\2 Semestre\Unit1.dfm=C:\Projeto integrador\2 Semestre\UnCadastro.dfm</Transaction>
+    <Transaction>2025/09/04 22:26:05.000.179,C:\Projeto integrador\2 Semestre\Unit1.pas=C:\Projeto integrador\2 Semestre\UnCadastro.pas</Transaction>
+    <Transaction>2025/09/06 18:55:25.474,=C:\Projeto integrador\2 Semestre\Unit1.pas</Transaction>
+    <Transaction>2025/09/06 19:06:39.595,C:\Projeto integrador\2 Semestre\UnMsg.pas=C:\Projeto integrador\2 Semestre\Unit1.pas</Transaction>
+    <Transaction>2025/09/06 19:06:39.595,C:\Projeto integrador\2 Semestre\UnMsg.dfm=C:\Projeto integrador\2 Semestre\Unit1.dfm</Transaction>
+  </Transactions>
+</BorlandProject>

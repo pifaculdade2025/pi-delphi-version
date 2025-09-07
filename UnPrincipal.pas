@@ -1,0 +1,60 @@
+unit UnPrincipal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls,
+  Data.DBXCommon, IPPeerClient, Data.DB, Data.SqlExpr, Data.DBXInterBase,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf,
+  FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async,
+  FireDAC.Phys, FireDAC.VCLUI.Wait, FireDAC.Comp.Client, FireDAC.Phys.FB,
+  FireDAC.Phys.FBDef, Vcl.ComCtrls, System.ImageList, Vcl.ImgList,
+  Vcl.Imaging.pngimage;
+
+type
+  TfrmPrincipal = class(TForm)
+    pnlPrincipal: TPanel;
+    FDConnection1: TFDConnection;
+    TreeView1: TTreeView;
+    ImageList1: TImageList;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    ImageList2: TImageList;
+    procedure TreeView1DblClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure Mensagem(psMsg: String);
+  end;
+
+var
+  frmPrincipal: TfrmPrincipal;
+
+implementation
+
+uses
+  UnCadastro, UnMsg;
+
+{$R *.dfm}
+
+procedure TfrmPrincipal.Mensagem(psMsg: String);
+begin
+  Application.CreateForm(TfrmMsg, frmMsg);
+  frmMsg.MemoMsg.Lines.Clear;
+  frmMsg.MemoMsg.Lines.Add(psMsg);
+  frmMsg.ShowModal;
+end;
+
+procedure TfrmPrincipal.TreeView1DblClick(Sender: TObject);
+begin
+  if TreeView1.Selected.Text = 'Terapeutas / Pacientes' then
+  begin
+    Application.CreateForm(TfrmCadastros, frmCadastros);
+    frmCadastros.Show;
+  end;
+
+end;
+
+end.
