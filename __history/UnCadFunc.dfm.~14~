@@ -1,0 +1,254 @@
+object frmCadFunc: TfrmCadFunc
+  Left = 436
+  Top = 98
+  Caption = 'frmCadFunc'
+  ClientHeight = 441
+  ClientWidth = 870
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = [fsBold]
+  Position = poDesigned
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  TextHeight = 15
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 870
+    Height = 441
+    Align = alClient
+    BevelOuter = bvNone
+    Caption = 'Panel1'
+    Color = clWhite
+    ParentBackground = False
+    ShowCaption = False
+    TabOrder = 0
+    ExplicitLeft = -266
+    ExplicitTop = -23
+    ExplicitWidth = 890
+    ExplicitHeight = 464
+    object Panel2: TPanel
+      Left = 830
+      Top = 0
+      Width = 40
+      Height = 441
+      Align = alRight
+      BevelOuter = bvNone
+      Caption = 'Panel1'
+      Color = 9989246
+      ParentBackground = False
+      ShowCaption = False
+      TabOrder = 0
+      ExplicitLeft = 850
+      ExplicitHeight = 464
+    end
+    object Panel3: TPanel
+      Left = 790
+      Top = 0
+      Width = 40
+      Height = 441
+      Align = alRight
+      BevelOuter = bvNone
+      Caption = 'Panel1'
+      Color = 5881196
+      ParentBackground = False
+      ShowCaption = False
+      TabOrder = 1
+      ExplicitLeft = 810
+      ExplicitHeight = 464
+    end
+    object Panel4: TPanel
+      Left = 0
+      Top = 0
+      Width = 790
+      Height = 441
+      Align = alClient
+      BevelOuter = bvNone
+      Caption = 'Panel4'
+      Color = clWhite
+      ParentBackground = False
+      ShowCaption = False
+      TabOrder = 2
+      ExplicitLeft = 304
+      ExplicitTop = 216
+      ExplicitWidth = 185
+      ExplicitHeight = 41
+      object pnlBotoes: TPanel
+        Left = 0
+        Top = 0
+        Width = 790
+        Height = 49
+        Align = alTop
+        BevelOuter = bvNone
+        Caption = 'pnlBotoes'
+        Color = 16181229
+        ParentBackground = False
+        ShowCaption = False
+        TabOrder = 0
+        ExplicitTop = 8
+        object Shape1: TShape
+          Left = 0
+          Top = 48
+          Width = 790
+          Height = 1
+          Align = alBottom
+          ExplicitLeft = 180
+          ExplicitTop = 176
+          ExplicitWidth = 65
+        end
+        object ToolBar1: TToolBar
+          Left = 0
+          Top = 0
+          Width = 790
+          Height = 48
+          Align = alClient
+          ButtonHeight = 49
+          ButtonWidth = 49
+          Caption = 'ToolBar1'
+          Images = frmPrincipal.ImageList1
+          TabOrder = 0
+          object btSalvar: TToolButton
+            Left = 0
+            Top = 0
+            Cursor = crHandPoint
+            Hint = 'Gravar Cadastro'
+            Caption = 'btSalvar'
+            Enabled = False
+            ImageIndex = 16
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = btSalvarClick
+          end
+          object btEditar: TToolButton
+            Left = 49
+            Top = 0
+            Cursor = crHandPoint
+            Hint = 'Alterar Cadastro'
+            Caption = 'btEditar'
+            ImageIndex = 8
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = btEditarClick
+          end
+          object btNovo: TToolButton
+            Left = 98
+            Top = 0
+            Cursor = crHandPoint
+            Hint = 'Novo Cadastro'
+            Caption = 'btNovo'
+            ImageIndex = 11
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = btNovoClick
+          end
+          object btCancelar: TToolButton
+            Left = 147
+            Top = 0
+            Cursor = crHandPoint
+            Hint = 'Cancelar Cadastro'
+            Caption = 'btCancelar'
+            Enabled = False
+            ImageIndex = 18
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = btCancelarClick
+          end
+          object btExcuir: TToolButton
+            Left = 196
+            Top = 0
+            Cursor = crHandPoint
+            Hint = 'Excluir Cadastro'
+            Caption = 'btExcuir'
+            ImageIndex = 10
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = btExcuirClick
+          end
+        end
+      end
+      object GridCadFunc: TDBGrid
+        Left = 0
+        Top = 49
+        Width = 790
+        Height = 392
+        Align = alClient
+        DataSource = dsCadFunc
+        ReadOnly = True
+        TabOrder = 1
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -12
+        TitleFont.Name = 'Segoe UI'
+        TitleFont.Style = [fsBold]
+        Columns = <
+          item
+            Alignment = taCenter
+            Color = 16181229
+            Expanded = False
+            FieldName = 'CODIGO'
+            Title.Caption = 'C'#243'digo'
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -12
+            Title.Font.Name = 'Segoe UI'
+            Title.Font.Style = [fsBold]
+            Width = 89
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'DESCRICAO'
+            Title.Caption = 'Descri'#231#227'o'
+            Width = 384
+            Visible = True
+          end>
+      end
+    end
+  end
+  object qCadFunc: TFDQuery
+    BeforeInsert = qCadFuncBeforeEdit
+    AfterInsert = qCadFuncAfterInsert
+    BeforeEdit = qCadFuncBeforeEdit
+    AfterPost = qCadFuncAfterPost
+    AfterCancel = qCadFuncAfterCancel
+    BeforeDelete = qCadFuncBeforeDelete
+    AfterDelete = qCadFuncAfterDelete
+    CachedUpdates = True
+    Connection = frmPrincipal.FDConnection1
+    SQL.Strings = (
+      'SELECT * FROM FUNCOES')
+    Left = 816
+    Top = 64
+    object qCadFuncCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+      Origin = 'CODIGO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      ReadOnly = True
+      Required = True
+    end
+    object qCadFuncDESCRICAO: TWideStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      Size = 100
+    end
+  end
+  object dsCadFunc: TDataSource
+    DataSet = qCadFunc
+    Left = 814
+    Top = 128
+  end
+  object qAuxFunc: TFDQuery
+    BeforeInsert = qCadFuncBeforeEdit
+    BeforeEdit = qCadFuncBeforeEdit
+    CachedUpdates = True
+    Connection = frmPrincipal.FDConnection1
+    SQL.Strings = (
+      'SELECT * FROM FUNCOES')
+    Left = 816
+    Top = 200
+  end
+end

@@ -1,0 +1,100 @@
+unit UnPesquisa;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.StrUtils, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.StdCtrls, Vcl.Grids,
+  Vcl.DBGrids, Vcl.ExtCtrls, Vcl.CheckLst, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+
+type
+  TfrmPesquisa = class(TForm)
+    Panel1: TPanel;
+    Shape1: TShape;
+    Panel2: TPanel;
+    btCancelar: TButton;
+    GridPesq: TDBGrid;
+    EditCodigo: TEdit;
+    Label1: TLabel;
+    EditNome: TEdit;
+    lbNomeDesc: TLabel;
+    qPesq: TFDQuery;
+    dsPesq: TDataSource;
+    btPesquisar: TButton;
+    ckPaciente: TCheckBox;
+    ckProfissional: TCheckBox;
+    procedure btPesquisarClick(Sender: TObject);
+    procedure GridPesqDblClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormDestroy(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmPesquisa: TfrmPesquisa;
+
+implementation
+
+Uses
+  UnPrincipal, UnCadastro;
+
+{$R *.dfm}
+
+procedure TfrmPesquisa.btPesquisarClick(Sender: TObject);
+begin
+  qPesq.Close;
+  if btPesquisar.Tag = 999 then
+    qPesq.SQL.Text := 'SELECT CODIGO, NOME DESCRICAO FROM CADASTRO WHERE ' +
+      IfThen(EditCodigo.Text <> '', ' AND CODIGO = ' + EditCodigo.Text) +
+      IfThen(EditNome.Text <> '', ' AND UPPER(NOME) LIKE ' + QuotedStr('%'+UpperCase(Trim(EditNome.Text))+'%')) +
+      IfThen(not (ckPaciente.Checked and ckProfissional.Checked),
+      IfThen(ckPaciente.Checked, ' AND TIPO = ''Paciente''') +
+      IfThen(ckProfissional.Checked, ' AND TIPO = ''Profissional''')) +
+      'ORDER BY CODIGO'
+  else if btPesquisar.Tag = 99 then
+    qPesq.SQL.Text := 'SELECT CODIGO, NOME DESCRICAO FROM CADASTRO WHERE TIPO = ''Profissional''' +
+      IfThen(EditCodigo.Text <> '', ' AND CODIGO = ' + EditCodigo.Text) +
+      IfThen(EditNome.Text <> '', ' AND UPPER(NOME) LIKE ' + QuotedStr('%'+UpperCase(Trim(EditNome.Text))+'%')) +
+      'ORDER BY CODIGO'
+  else
+    qPesq.SQL.Text := 'SELECT CODIGO, DESCRICAO FROM FUNCOES WHERE 1=1' +
+      IfThen(EditCodigo.Text <> '', ' AND CODIGO = ' + EditCodigo.Text) +
+      IfThen(EditNome.Text <> '', ' AND UPPER(DESCRICAO) LIKE ' + QuotedStr('%'+UpperCase(Trim(EditNome.Text))+'%')) +
+      'ORDER BY CODIGO';
+  qPesq.Open;
+end;
+
+procedure TfrmPesquisa.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TfrmPesquisa.FormDestroy(Sender: TObject);
+begin
+  frmPesquisa := nil;
+end;
+
+procedure TfrmPesquisa.GridPesqDblClick(Sender: TObject);
+begin
+  if not qPesq.IsEmpty then
+  begin
+    if btPesquisar.Tag = 999 then
+    begin
+      frmCadastros.btPesquisar.Tag := qPesq.FieldByName('CODIGO').AsInteger;
+      ModalResult := mrOk;
+    end
+    else
+    begin
+      frmCadastros.giAddCod := qPesq.FieldByName('CODIGO').AsInteger;
+      ModalResult := mrOk;
+    end;
+  end;
+end;
+
+end.

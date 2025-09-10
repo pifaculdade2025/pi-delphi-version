@@ -1,16 +1,17 @@
 object frmCadastros: TfrmCadastros
   Left = 436
-  Top = 180
-  Caption = 'Cadastro'
-  ClientHeight = 459
+  Top = 65
+  Caption = 'Cadastros'
+  ClientHeight = 464
   ClientWidth = 890
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
   Font.Name = 'Segoe UI'
-  Font.Style = []
+  Font.Style = [fsBold]
   Position = poDesigned
+  Visible = True
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -19,7 +20,7 @@ object frmCadastros: TfrmCadastros
     Left = 0
     Top = 0
     Width = 890
-    Height = 459
+    Height = 464
     Align = alClient
     BevelOuter = bvNone
     Caption = 'Panel1'
@@ -28,12 +29,12 @@ object frmCadastros: TfrmCadastros
     ShowCaption = False
     TabOrder = 0
     ExplicitWidth = 888
-    ExplicitHeight = 451
+    ExplicitHeight = 456
     object Panel2: TPanel
       Left = 850
       Top = 0
       Width = 40
-      Height = 459
+      Height = 464
       Align = alRight
       BevelOuter = bvNone
       Caption = 'Panel1'
@@ -41,12 +42,14 @@ object frmCadastros: TfrmCadastros
       ParentBackground = False
       ShowCaption = False
       TabOrder = 0
+      ExplicitLeft = 848
+      ExplicitHeight = 456
     end
     object Panel3: TPanel
       Left = 810
       Top = 0
       Width = 40
-      Height = 459
+      Height = 464
       Align = alRight
       BevelOuter = bvNone
       Caption = 'Panel1'
@@ -54,20 +57,21 @@ object frmCadastros: TfrmCadastros
       ParentBackground = False
       ShowCaption = False
       TabOrder = 1
-      ExplicitLeft = 794
+      ExplicitLeft = 808
+      ExplicitHeight = 456
     end
     object Panel4: TPanel
       Left = 0
       Top = 0
       Width = 810
-      Height = 459
+      Height = 464
       Align = alClient
       BevelOuter = bvNone
       Caption = 'Panel4'
       ShowCaption = False
       TabOrder = 2
       ExplicitWidth = 808
-      ExplicitHeight = 451
+      ExplicitHeight = 456
       object Label1: TLabel
         Left = 15
         Top = 88
@@ -124,9 +128,9 @@ object frmCadastros: TfrmCadastros
         ParentFont = False
         Transparent = False
       end
-      object Label5: TLabel
+      object lbCorpoCad: TLabel
         Left = 0
-        Top = 202
+        Top = 207
         Width = 810
         Height = 17
         AutoSize = False
@@ -141,6 +145,58 @@ object frmCadastros: TfrmCadastros
         ParentFont = False
         Transparent = False
       end
+      object lbRegistroProfissional: TLabel
+        Left = 239
+        Top = 140
+        Width = 128
+        Height = 17
+        Caption = 'Registro Profissional'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label5: TLabel
+        Left = 636
+        Top = 88
+        Width = 50
+        Height = 17
+        Caption = 'N'#250'mero'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label6: TLabel
+        Left = 636
+        Top = 140
+        Width = 107
+        Height = 17
+        Caption = 'Data do Cadastro'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lbDtCad: TLabel
+        Left = 636
+        Top = 156
+        Width = 62
+        Height = 21
+        Caption = 'lbDtCad'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 10999461
+        Font.Height = -16
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
       object pnlBotoes: TPanel
         Left = 0
         Top = 0
@@ -153,6 +209,7 @@ object frmCadastros: TfrmCadastros
         ParentBackground = False
         ShowCaption = False
         TabOrder = 0
+        ExplicitWidth = 808
         object Shape1: TShape
           Left = 0
           Top = 48
@@ -174,13 +231,15 @@ object frmCadastros: TfrmCadastros
           Caption = 'ToolBar1'
           Images = frmPrincipal.ImageList1
           TabOrder = 0
+          ExplicitWidth = 808
           object btSalvar: TToolButton
             Left = 0
             Top = 0
             Cursor = crHandPoint
             Hint = 'Gravar Cadastro'
             Caption = 'btSalvar'
-            ImageIndex = 7
+            Enabled = False
+            ImageIndex = 16
             ParentShowHint = False
             ShowHint = True
             OnClick = btSalvarClick
@@ -213,7 +272,8 @@ object frmCadastros: TfrmCadastros
             Cursor = crHandPoint
             Hint = 'Cancelar Cadastro'
             Caption = 'btCancelar'
-            ImageIndex = 9
+            Enabled = False
+            ImageIndex = 18
             ParentShowHint = False
             ShowHint = True
             OnClick = btCancelarClick
@@ -281,18 +341,25 @@ object frmCadastros: TfrmCadastros
             ShowHint = True
             OnClick = btUltimoClick
           end
+          object ToolButton1: TToolButton
+            Left = 449
+            Top = 0
+            Width = 8
+            Caption = 'ToolButton1'
+            ImageIndex = 7
+            Style = tbsSeparator
+          end
+          object btPesquisar: TToolButton
+            Left = 457
+            Top = 0
+            Hint = 'Pesquisar registros'
+            Caption = 'btPesquisar'
+            ImageIndex = 21
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = btPesquisarClick
+          end
         end
-      end
-      object EditCodigo: TDBEdit
-        Left = 15
-        Top = 111
-        Width = 66
-        Height = 23
-        Color = 13231816
-        DataField = 'CODIGO'
-        DataSource = dsCad
-        ReadOnly = True
-        TabOrder = 1
       end
       object EditNome: TDBEdit
         Left = 87
@@ -302,7 +369,7 @@ object frmCadastros: TfrmCadastros
         DataField = 'NOME'
         DataSource = dsCad
         ReadOnly = True
-        TabOrder = 2
+        TabOrder = 1
       end
       object rdgTipo: TDBRadioGroup
         Left = 15
@@ -323,11 +390,12 @@ object frmCadastros: TfrmCadastros
           'Paciente')
         ParentFont = False
         ReadOnly = True
-        TabOrder = 3
+        TabOrder = 2
+        OnChange = rdgTipoChange
       end
       object Panel5: TPanel
         Left = 0
-        Top = 224
+        Top = 229
         Width = 810
         Height = 235
         Align = alBottom
@@ -336,8 +404,8 @@ object frmCadastros: TfrmCadastros
         Color = 16181229
         ParentBackground = False
         ShowCaption = False
-        TabOrder = 4
-        ExplicitTop = 216
+        TabOrder = 3
+        ExplicitTop = 221
         ExplicitWidth = 808
         object Shape2: TShape
           Left = 0
@@ -363,22 +431,21 @@ object frmCadastros: TfrmCadastros
           Height = 196
           Align = alBottom
           DataSource = dsCorpoCad
+          PopupMenu = popCadastro
+          ReadOnly = True
           TabOrder = 0
           TitleFont.Charset = DEFAULT_CHARSET
           TitleFont.Color = clWindowText
           TitleFont.Height = -12
           TitleFont.Name = 'Segoe UI'
-          TitleFont.Style = []
+          TitleFont.Style = [fsBold]
           Columns = <
             item
+              Alignment = taCenter
+              Color = 16181229
               Expanded = False
-              FieldName = 'CODTERAPEUTA'
-              Title.Caption = 'C'#243'digo Terapeuta'
-              Title.Font.Charset = DEFAULT_CHARSET
-              Title.Font.Color = clWindowText
-              Title.Font.Height = -12
-              Title.Font.Name = 'Segoe UI'
-              Title.Font.Style = [fsBold]
+              FieldName = 'CODIGO'
+              Title.Caption = 'C'#243'digo'
               Width = 146
               Visible = True
             end
@@ -386,24 +453,7 @@ object frmCadastros: TfrmCadastros
               Expanded = False
               FieldName = 'NOME'
               Title.Caption = 'Nome'
-              Title.Font.Charset = DEFAULT_CHARSET
-              Title.Font.Color = clWindowText
-              Title.Font.Height = -12
-              Title.Font.Name = 'Segoe UI'
-              Title.Font.Style = [fsBold]
-              Width = 172
-              Visible = True
-            end
-            item
-              Expanded = False
-              FieldName = 'FUNCAO'
-              Title.Caption = #193'rea'
-              Title.Font.Charset = DEFAULT_CHARSET
-              Title.Font.Color = clWindowText
-              Title.Font.Height = -12
-              Title.Font.Name = 'Segoe UI'
-              Title.Font.Style = [fsBold]
-              Width = 222
+              Width = 305
               Visible = True
             end>
         end
@@ -418,38 +468,30 @@ object frmCadastros: TfrmCadastros
           Caption = 'ToolBar2'
           Images = frmPrincipal.ImageList2
           TabOrder = 1
-          ExplicitTop = 7
-          ExplicitHeight = 38
-          object btSalvarCorpoCad: TToolButton
+          ExplicitWidth = 808
+          object btNovoCorpoCad: TToolButton
             Left = 0
             Top = 0
-            Caption = 'btSalvarCorpoCad'
-            ImageIndex = 2
-          end
-          object btNovoCorpoCad: TToolButton
-            Left = 39
-            Top = 0
+            Cursor = crHandPoint
+            Hint = 'Novo registro'
             Caption = 'btNovoCorpoCad'
             ImageIndex = 1
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = btNovoCorpoCadClick
           end
-          object btCancelarCorpoCad: TToolButton
-            Left = 78
+          object btExcluirCorpoCad: TToolButton
+            Left = 39
             Top = 0
-            Caption = 'btCancelarCorpoCad'
-            ImageIndex = 0
+            Cursor = crHandPoint
+            Hint = 'Excluir item'
+            Caption = 'btExcluirCorpoCad'
+            ImageIndex = 2
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = btExcluirCorpoCadClick
           end
         end
-      end
-      object dtpNascimento: TDateTimePicker
-        Left = 454
-        Top = 140
-        Width = 186
-        Height = 23
-        Date = 45906.000000000000000000
-        Time = 0.601691388888866600
-        DoubleBuffered = False
-        ParentDoubleBuffered = False
-        TabOrder = 5
       end
       object meDtNasc: TMaskEdit
         Left = 455
@@ -458,47 +500,76 @@ object frmCadastros: TfrmCadastros
         Height = 23
         EditMask = '!99/99/9999;1;_'
         MaxLength = 10
-        TabOrder = 6
+        ReadOnly = True
+        TabOrder = 4
         Text = '  /  /    '
         OnExit = meDtNascExit
+      end
+      object EditCodigo: TEdit
+        Left = 15
+        Top = 111
+        Width = 66
+        Height = 23
+        Color = 13231816
+        NumbersOnly = True
+        TabOrder = 5
+        Text = 'EditCodigo'
+        OnKeyPress = EditCodigoKeyPress
+      end
+      object EditRegistroProfissional: TDBEdit
+        Left = 239
+        Top = 163
+        Width = 210
+        Height = 23
+        DataField = 'REGISTRO_PROFISSIONAL'
+        DataSource = dsCad
+        TabOrder = 6
+      end
+      object meNumero: TMaskEdit
+        Left = 636
+        Top = 111
+        Width = 147
+        Height = 23
+        EditMask = '!(99) 99999-9999;1;_'
+        MaxLength = 15
+        ReadOnly = True
+        TabOrder = 7
+        Text = '(  )      -    '
       end
     end
   end
   object qCad: TFDQuery
-    BeforeInsert = qCadBeforeEdit
+    BeforeInsert = qCadBeforeInsert
+    AfterInsert = qCadAfterInsert
     BeforeEdit = qCadBeforeEdit
     BeforePost = qCadBeforePost
     AfterPost = qCadAfterPost
+    BeforeCancel = qCadBeforeCancel
+    AfterCancel = qCadAfterCancel
     AfterScroll = qCadAfterScroll
     CachedUpdates = True
     Connection = frmPrincipal.FDConnection1
     SQL.Strings = (
       'SELECT * FROM CADASTRO')
-    Left = 832
+    Left = 840
     Top = 56
   end
   object dsCad: TDataSource
     DataSet = qCad
-    Left = 832
+    Left = 840
     Top = 120
   end
   object qCorpoCad: TFDQuery
     CachedUpdates = True
+    IndexFieldNames = 'CODIGO'
     Connection = frmPrincipal.FDConnection1
-    SQL.Strings = (
-      
-        'SELECT TERAPEUTAS_POR_PACIENTE.CODTERAPEUTA, CADASTRO.NOME, CADA' +
-        'STRO.FUNCAO  FROM TERAPEUTAS_POR_PACIENTE'
-      
-        'JOIN CADASTRO ON CADASTRO.CODIGO = TERAPEUTAS_POR_PACIENTE.CODTE' +
-        'RAPEUTA  ')
-    Left = 832
+    Left = 840
     Top = 184
   end
   object dsCorpoCad: TDataSource
     DataSet = qCorpoCad
-    Left = 832
-    Top = 240
+    Left = 840
+    Top = 248
   end
   object qCadAux: TFDQuery
     BeforePost = qCadBeforePost
@@ -507,7 +578,16 @@ object frmCadastros: TfrmCadastros
     Connection = frmPrincipal.FDConnection1
     SQL.Strings = (
       'SELECT * FROM CADASTRO')
-    Left = 832
+    Left = 840
     Top = 312
+  end
+  object popCadastro: TPopupMenu
+    OnPopup = popCadastroPopup
+    Left = 496
+    Top = 277
+    object mitAbreCad: TMenuItem
+      Caption = 'Abrir Cadastro'
+      OnClick = mitAbreCadClick
+    end
   end
 end

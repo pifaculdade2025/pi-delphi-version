@@ -1,0 +1,615 @@
+unit UnCadastro;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.ToolWin, Vcl.ComCtrls, Vcl.Mask, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids,
+  Vcl.Menus;
+
+type
+  TfrmCadastros = class(TForm)
+    qCad: TFDQuery;
+    dsCad: TDataSource;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    Panel4: TPanel;
+    pnlBotoes: TPanel;
+    ToolBar1: TToolBar;
+    btSalvar: TToolButton;
+    btEditar: TToolButton;
+    btCancelar: TToolButton;
+    btExcuir: TToolButton;
+    ToolButton5: TToolButton;
+    btPrimeiro: TToolButton;
+    btAnterior: TToolButton;
+    btProximo: TToolButton;
+    btUltimo: TToolButton;
+    btNovo: TToolButton;
+    Shape1: TShape;
+    Label1: TLabel;
+    Label2: TLabel;
+    EditNome: TDBEdit;
+    Label3: TLabel;
+    rdgTipo: TDBRadioGroup;
+    Panel5: TPanel;
+    GridCorpoCad: TDBGrid;
+    qCorpoCad: TFDQuery;
+    dsCorpoCad: TDataSource;
+    ToolBar2: TToolBar;
+    btExcluirCorpoCad: TToolButton;
+    Shape2: TShape;
+    Label4: TLabel;
+    lbCorpoCad: TLabel;
+    Shape3: TShape;
+    qCadAux: TFDQuery;
+    meDtNasc: TMaskEdit;
+    btNovoCorpoCad: TToolButton;
+    ToolButton1: TToolButton;
+    btPesquisar: TToolButton;
+    EditCodigo: TEdit;
+    EditRegistroProfissional: TDBEdit;
+    lbRegistroProfissional: TLabel;
+    meNumero: TMaskEdit;
+    Label5: TLabel;
+    Label6: TLabel;
+    lbDtCad: TLabel;
+    popCadastro: TPopupMenu;
+    procedure FormDestroy(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormCreate(Sender: TObject);
+    procedure qCadAfterScroll(DataSet: TDataSet);
+    procedure btPrimeiroClick(Sender: TObject);
+    procedure btAnteriorClick(Sender: TObject);
+    procedure btProximoClick(Sender: TObject);
+    procedure btUltimoClick(Sender: TObject);
+    procedure qCadBeforePost(DataSet: TDataSet);
+    procedure btEditarClick(Sender: TObject);
+    procedure btNovoClick(Sender: TObject);
+    procedure qCadAfterPost(DataSet: TDataSet);
+    procedure btSalvarClick(Sender: TObject);
+    procedure btCancelarClick(Sender: TObject);
+    procedure btExcuirClick(Sender: TObject);
+    procedure qCadBeforeEdit(DataSet: TDataSet);
+    procedure meDtNascExit(Sender: TObject);
+    procedure qCadAfterCancel(DataSet: TDataSet);
+    procedure Pr1Click(Sender: TObject);
+    procedure btNovoCorpoCadClick(Sender: TObject);
+    procedure qCadAfterInsert(DataSet: TDataSet);
+    procedure btExcluirCorpoCadClick(Sender: TObject);
+    procedure rdgTipoChange(Sender: TObject);
+    procedure btPesquisarClick(Sender: TObject);
+    procedure qCadBeforeInsert(DataSet: TDataSet);
+    procedure EditCodigoKeyPress(Sender: TObject; var Key: Char);
+    procedure qCadBeforeCancel(DataSet: TDataSet);
+    procedure popCadastroPopup(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    giAddCod, giCodAtual: integer;
+  end;
+
+var
+  frmCadastros: TfrmCadastros;
+
+implementation
+
+uses
+  unPrincipal, System.SysUtils, UnPesquisa;
+
+{$R *.dfm}
+
+procedure TfrmCadastros.btAnteriorClick(Sender: TObject);
+var
+  liCod: integer;
+begin
+  liCod := qCad.FieldByName('CODIGO').AsInteger;
+  qCad.Close;
+  qCad.SQL.Text := 'SELECT FIRST 2 * FROM CADASTRO WHERE CODIGO < ' + liCod.ToString+
+    'ORDER BY CODIGO DESC';
+  qCad.Open;
+  if qCad.RecordCount = 0 then
+  begin
+    btPrimeiroClick(btPrimeiro);
+    exit;
+  end;
+  if qCad.RecordCount = 1 then
+  begin
+    btAnterior.Enabled := False;
+    btPrimeiro.Enabled := False;
+    btAnterior.ImageIndex := 13;
+    btPrimeiro.ImageIndex := 12;
+  end;
+  btProximo.Enabled := True;
+  btUltimo.Enabled := True;
+  btProximo.ImageIndex := 5;
+  btUltimo.ImageIndex := 6;
+end;
+
+procedure TfrmCadastros.btCancelarClick(Sender: TObject);
+begin
+  qCad.Cancel;
+  qCad.Close;
+  qCad.SQL.Text := 'SELECT * FROM CADASTRO WHERE CODIGO = 0' + giCodAtual.ToString;
+  qCad.Open;
+end;
+
+procedure TfrmCadastros.btEditarClick(Sender: TObject);
+begin
+  qCad.Edit;
+  EditCodigo.Enabled := False;
+end;
+
+procedure TfrmCadastros.btExcluirCorpoCadClick(Sender: TObject);
+begin
+  if not qCorpoCad.IsEmpty then
+  begin
+    if frmPrincipal.Pergunta('ATENÇÃO!' + #13#10#13#10 +
+    'Tem certeza que deseja exluir esse registro?'+ #13#10 +
+      'Ele não poderá ser restaurado!') then
+    begin
+      qCadAux.Close;
+      qCadAux.SQL.Text := 'DELETE FROM CORPO_CADASTRO WHERE CODIGO = 0'+ qCorpoCad.FieldByName('CODCORPO').AsString;
+      qCadAux.ExecSQL;
+      qCadAfterScroll(qCad);
+    end;
+  end;
+end;
+
+procedure TfrmCadastros.btExcuirClick(Sender: TObject);
+begin
+  if frmPrincipal.Pergunta('ATENÇÃO!' + #13#10#13#10 +
+    'Tem certeza que deseja exluir esse registro?'+ #13#10 +
+      'Ele não poderá ser restaurado!') then
+  begin
+    giCodAtual := qCad.FieldByName('CODIGO').AsInteger;
+    qCad.Delete;
+    qCad.ApplyUpdates(-1);
+    qCadAux.Close;
+    qCadAux.SQL.Text := 'DELETE FROM CORPO_CADASTRO WHERE CODCADASTRO = 0' + giCodAtual.ToString;
+    qCadAux.ExecSQL;
+    qCad.Close;
+    qCad.SQL.Text := 'SELECT FIRST 2 * FROM CADASTRO WHERE CODIGO < 0' + giCodAtual.ToString + 'ORDER BY CODIGO DESC';
+    qCad.Open;
+    if qCad.RecordCount = 0 then
+    begin
+      qCad.Close;
+      qCad.SQL.Text := 'SELECT FIRST 2 * FROM CADASTRO WHERE CODIGO > 0' + giCodAtual.ToString + 'ORDER BY CODIGO ASC';
+      qCad.Open;
+    end;
+  end;
+end;
+
+procedure TfrmCadastros.btNovoClick(Sender: TObject);
+begin
+  qCadAux.Close;
+  qCadAux.SQL.Text := 'SELECT MAX(CODIGO) +1 CODIGO FROM CADASTRO';
+  qCadAux.Open;
+  qCad.Append;
+  qCad.FieldByName('CODIGO').AsInteger := qCadAux.FieldByName('CODIGO').AsInteger;
+  EditCodigo.Text := qCad.FieldByName('CODIGO').AsString;
+  EditCodigo.Enabled := False;
+end;
+
+procedure TfrmCadastros.btNovoCorpoCadClick(Sender: TObject);
+var
+  liCod: integer;
+begin
+  Application.CreateForm(TfrmPesquisa, frmPesquisa);
+  if {(qCad.FieldByName('TIPO').AsString = 'Profissional') or} (rdgTipo.ItemIndex = 0) then
+  begin
+    frmPesquisa.GridPesq.Columns[1].Title.Caption := 'Descrição';
+    frmPesquisa.btPesquisar.Tag := 0;
+    frmPesquisa.btPesquisarClick(frmPesquisa.btPesquisar);
+    frmPesquisa.Caption := 'Selecione uma função';
+  end
+  else
+  begin
+    frmPesquisa.GridPesq.Columns[1].Title.Caption := 'Nome';
+    frmPesquisa.GridPesq.Columns[4].Visible := true;
+    frmPesquisa.GridPesq.Columns[4].Width := 400;
+    frmPesquisa.EditArea.Visible := true;
+    frmPesquisa.lbAreas.Visible := true;
+    frmPesquisa.btPesquisar.Tag := 99;
+    frmPesquisa.btPesquisarClick(frmPesquisa.btPesquisar);
+    frmPesquisa.Caption := 'Selecione um profissional';
+  end;
+  frmPesquisa.lbNomeDesc.Caption := frmPesquisa.GridPesq.Columns[1].Title.Caption;
+  if frmPesquisa.ShowModal = mrOk then
+  begin
+    if not qCorpoCad.Locate('CODIGO', giAddCod, []) then
+    begin
+      qCadAux.Close;
+      qCadAux.SQL.Text := 'SELECT MAX(CODIGO) +1 CODIGO FROM CORPO_CADASTRO';
+      qCadAux.Open;
+      liCod := qCadAux.FieldByName('CODIGO').AsInteger;
+      qCadAux.Close;
+      qCadAux.SQL.Text := 'INSERT INTO CORPO_CADASTRO (CODIGO, CODCADASTRO, COD_FUNC_TERAPEUTA) ' +
+        ' VALUES ('+liCod.ToString+','+qCad.FieldByName('CODIGO').AsString+','+ giAddCod.ToString +');';
+      qCadAux.ExecSQL;
+      qCadAfterScroll(qCad);
+      qCorpoCad.Locate('CODIGO', giAddCod, []);
+    end;
+  end;
+end;
+
+procedure TfrmCadastros.btPesquisarClick(Sender: TObject);
+begin
+  Application.CreateForm(TfrmPesquisa, frmPesquisa);
+  frmPesquisa.GridPesq.Columns[2].Visible := true;
+  frmPesquisa.GridPesq.Columns[3].Visible := true;
+  frmPesquisa.GridPesq.Columns[4].Visible := true;
+  frmPesquisa.GridPesq.Columns[4].Width := 400;
+  frmPesquisa.GridPesq.Columns[3].Width := 50;
+  frmPesquisa.GridPesq.Columns[2].Width := 80;
+  frmPesquisa.EditArea.Visible := true;
+  frmPesquisa.lbAreas.Visible := true;
+  frmPesquisa.btPesquisar.tag := 999;
+  frmPesquisa.ckPaciente.Visible := true;
+  frmPesquisa.ckProfissional.Visible := true;
+  frmPesquisa.btPesquisarClick(frmPesquisa.btPesquisar);
+  if frmPesquisa.ShowModal = mrOk then
+  begin
+    qCad.Close;
+    qCad.SQL.Text := 'SELECT * FROM CADASTRO WHERE CODIGO = 0'+ btPesquisar.Tag.ToString;
+    qCad.Open;
+    btAnterior.Enabled := True;
+    btPrimeiro.Enabled := True;
+    btProximo.Enabled := True;
+    btUltimo.Enabled := True;
+    btAnterior.ImageIndex := 4;
+    btPrimeiro.ImageIndex := 3;
+    btProximo.ImageIndex := 5;
+    btUltimo.ImageIndex := 6;
+  end;
+end;
+
+procedure TfrmCadastros.btPrimeiroClick(Sender: TObject);
+begin
+  qCad.Close;
+  qCad.SQL.Text := 'SELECT FIRST 2 * FROM CADASTRO ORDER BY CODIGO';
+  qCad.Open;
+  btAnterior.Enabled := False;
+  btPrimeiro.Enabled := False;
+  btProximo.Enabled := True;
+  btUltimo.Enabled := True;
+  btAnterior.ImageIndex := 13;
+  btPrimeiro.ImageIndex := 12;
+  btProximo.ImageIndex := 5;
+  btUltimo.ImageIndex := 6;
+end;
+
+procedure TfrmCadastros.btProximoClick(Sender: TObject);
+var
+  liCod: integer;
+begin
+  liCod := qCad.FieldByName('CODIGO').AsInteger;
+  qCad.Close;
+  qCad.SQL.Text := 'SELECT FIRST 2 * FROM CADASTRO WHERE CODIGO > ' + liCod.ToString +
+    'ORDER BY CODIGO';
+  qCad.Open;
+  if qCad.RecordCount = 0 then
+  begin
+    btUltimoClick(btUltimo);
+    exit;
+  end;
+  if qCad.RecordCount = 1 then
+  begin
+    btProximo.Enabled := False;
+    btUltimo.Enabled := False;
+    btProximo.ImageIndex := 14;
+    btUltimo.ImageIndex := 15;
+  end;
+  btAnterior.Enabled := True;
+  btPrimeiro.Enabled := True;
+  btAnterior.ImageIndex := 4;
+  btPrimeiro.ImageIndex := 3;
+end;
+
+procedure TfrmCadastros.btSalvarClick(Sender: TObject);
+begin
+  qCad.Post;
+end;
+
+procedure TfrmCadastros.btUltimoClick(Sender: TObject);
+begin
+  qCad.Close;
+  qCad.SQL.Text := 'SELECT FIRST 1 * FROM CADASTRO ORDER BY CODIGO DESC';
+  qCad.Open;
+  btAnterior.Enabled := True;
+  btPrimeiro.Enabled := True;
+  btProximo.Enabled := False;
+  btUltimo.Enabled := False;
+  btAnterior.ImageIndex := 4;
+  btPrimeiro.ImageIndex := 3;
+  btProximo.ImageIndex := 14;
+  btUltimo.ImageIndex := 15;
+end;
+
+procedure TfrmCadastros.EditCodigoKeyPress(Sender: TObject; var Key: Char);
+begin
+  if (key = #13) and (EditCodigo.Text <> '') then
+  begin
+    giCodAtual := qCad.FieldByName('CODIGO').AsInteger;
+    qCad.Close;
+    qCad.SQL.Text := 'SELECT * FROM CADASTRO WHERE CODIGO = 0'+ EditCodigo.Text;
+    qCad.Open;
+    if qCad.RecordCount = 0 then
+    begin
+      qCad.Close;
+      qCad.SQL.Text := 'SELECT * FROM CADASTRO WHERE CODIGO = 0'+ giCodAtual.ToString;
+      qCad.Open;
+      Exit;
+    end;
+    btAnterior.Enabled := True;
+    btPrimeiro.Enabled := True;
+    btProximo.Enabled := True;
+    btUltimo.Enabled := True;
+    btAnterior.ImageIndex := 4;
+    btPrimeiro.ImageIndex := 3;
+    btProximo.ImageIndex := 5;
+    btUltimo.ImageIndex := 6;
+  end;
+end;
+
+procedure TfrmCadastros.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if qCad.State in [dsEdit, dsInsert] then
+    if frmPrincipal.Pergunta('Deseja salvar as alterações?') then
+      qCad.Post
+    else
+      qCad.Cancel;
+  Action := caFree;
+end;
+
+procedure TfrmCadastros.FormCreate(Sender: TObject);
+begin
+  btUltimoClick(btUltimo);
+end;
+
+procedure TfrmCadastros.FormDestroy(Sender: TObject);
+begin
+  frmCadastros := nil;
+end;
+
+procedure TfrmCadastros.meDtNascExit(Sender: TObject);
+var
+  ldData: TDateTime;
+begin
+  if (meDtNasc.Text <> '  /  /    ') and (not TryStrToDate(meDtNasc.Text, ldData)) then
+  begin
+      frmPrincipal.Mensagem('Data: ' + meDtNasc.Text + ' é inválida!');
+      abort;
+  end;
+end;
+
+procedure TfrmCadastros.popCadastroPopup(Sender: TObject);
+begin
+  if qCad.State in [dsEdit, dsInsert] then
+    Abort;
+end;
+
+procedure TfrmCadastros.Pr1Click(Sender: TObject);
+begin
+  frmPrincipal.Show;
+  frmPrincipal.SetFocus;
+  frmPrincipal.BringToFront;
+end;
+
+procedure TfrmCadastros.qCadAfterCancel(DataSet: TDataSet);
+begin
+  EditCodigo.Enabled := True;
+  EditNome.ReadOnly := True;
+  rdgTipo.ReadOnly := True;
+  meDtNasc.ReadOnly := True;
+  meNumero.ReadOnly := True;
+  btSalvar.Enabled := False;
+  btSalvar.ImageIndex := 16;
+  btCancelar.Enabled := False;
+  btCancelar.ImageIndex := 18;
+  btExcuir.Enabled := True;
+  btExcuir.ImageIndex := 10;
+  btPesquisar.Enabled := True;
+  btPesquisar.ImageIndex := 21;
+  btEditar.Enabled := True;
+  btEditar.ImageIndex := 8;
+  btNovo.Enabled := True;
+  btNovo.ImageIndex := 11;
+  btPrimeiro.Enabled := True;
+  btPrimeiro.ImageIndex := 3;
+  btAnterior.Enabled := True;
+  btAnterior.ImageIndex := 4;
+  btProximo.Enabled := True;
+  btProximo.ImageIndex := 5;
+  btUltimo.Enabled := True;
+  btUltimo.ImageIndex := 6;
+end;
+
+procedure TfrmCadastros.qCadAfterInsert(DataSet: TDataSet);
+begin
+  qCad.FieldByName('TIPO').AsString := 'Paciente';
+  qCad.FieldByName('DT_CADASTRO').AsDateTime := now;
+  rdgTipo.OnChange := rdgTipoChange;
+end;
+
+procedure TfrmCadastros.qCadAfterPost(DataSet: TDataSet);
+begin
+  qCad.ApplyUpdates(-1);
+  EditCodigo.Enabled := True;
+  EditNome.ReadOnly := True;
+  rdgTipo.ReadOnly := True;
+  meDtNasc.ReadOnly := True;
+  meNumero.ReadOnly := True;
+  btSalvar.Enabled := False;
+  btSalvar.ImageIndex := 16;
+  btCancelar.Enabled := False;
+  btCancelar.ImageIndex := 18;
+  btExcuir.Enabled := True;
+  btExcuir.ImageIndex := 10;
+  btPesquisar.Enabled := True;
+  btPesquisar.ImageIndex := 21;
+  btEditar.Enabled := True;
+  btEditar.ImageIndex := 8;
+  btNovo.Enabled := True;
+  btNovo.ImageIndex := 11;
+  btPrimeiro.Enabled := True;
+  btPrimeiro.ImageIndex := 3;
+  btAnterior.Enabled := True;
+  btAnterior.ImageIndex := 4;
+  btProximo.Enabled := True;
+  btProximo.ImageIndex := 5;
+  btUltimo.Enabled := True;
+  btUltimo.ImageIndex := 6;
+end;
+
+procedure TfrmCadastros.qCadAfterScroll(DataSet: TDataSet);
+begin
+  if qCad.FieldByName('DT_NASC').IsNull then
+    meDtNasc.Text := ''
+  else
+    meDtNasc.Text := DateToStr(qCad.FieldByName('DT_NASC').AsDateTime);
+
+  meNumero.Text := qCad.FieldByName('TELEFONE').AsString;
+
+  if qCad.FieldByName('DT_CADASTRO').IsNull then
+    lbDtCad.Caption := ''
+  else
+    lbDtCad.Caption := DateToStr(qCad.FieldByName('DT_CADASTRO').AsDateTime);
+
+  EditCodigo.Text := qCad.FieldByName('CODIGO').AsString;
+  qCorpoCad.Close;
+  if qCad.FieldByName('TIPO').AsString = 'Profissional' then
+  begin
+    lbCorpoCad.Caption := '    Áreas de atuação do profissional';
+    qCorpoCad.SQL.Text := 'SELECT FUNCOES.CODIGO, FUNCOES.DESCRICAO NOME, CORPO_CADASTRO.CODIGO CODCORPO FROM CORPO_CADASTRO '+
+      ' JOIN FUNCOES ON FUNCOES.CODIGO = CORPO_CADASTRO.COD_FUNC_TERAPEUTA '+
+      ' WHERE CORPO_CADASTRO.CODCADASTRO = 0' + qCad.FieldByName('CODIGO').AsString;
+    GridCorpoCad.Columns[1].Title.Caption := 'Descrição';
+    lbRegistroProfissional.Visible := true;
+    EditRegistroProfissional.Visible := true;
+  end
+  else
+  begin
+    lbCorpoCad.Caption := '    Profissionais que atendem o paciente';
+    qCorpoCad.SQL.Text := 'SELECT CADASTRO.CODIGO, CADASTRO.NOME, CORPO_CADASTRO.CODIGO CODCORPO FROM CORPO_CADASTRO '+
+      ' JOIN CADASTRO ON CADASTRO.CODIGO = CORPO_CADASTRO.COD_FUNC_TERAPEUTA '+
+      ' WHERE CORPO_CADASTRO.CODCADASTRO = 0' + qCad.FieldByName('CODIGO').AsString;
+    GridCorpoCad.Columns[1].Title.Caption := 'Nome';
+    lbRegistroProfissional.Visible := False;
+    EditRegistroProfissional.Visible := False;
+  end;
+  qCorpoCad.Open;
+end;
+
+procedure TfrmCadastros.qCadBeforeCancel(DataSet: TDataSet);
+begin
+  if qCad.State = dsInsert then
+  begin
+    qCadAux.Close;
+    qCadAux.SQL.Text := 'DELETE FROM CORPO_CADASTRO WHERE CODCADASTRO = 0'+ qCad.FieldByName('CODIGO').AsString;
+    qCadAux.ExecSQL;
+  end;
+end;
+
+procedure TfrmCadastros.qCadBeforeEdit(DataSet: TDataSet);
+begin
+  EditNome.ReadOnly := False;
+  rdgTipo.ReadOnly := False;
+  meDtNasc.ReadOnly := False;
+  meNumero.ReadOnly := False;
+  btSalvar.Enabled := True;
+  btSalvar.ImageIndex := 7;
+  btCancelar.Enabled := True;
+  btCancelar.ImageIndex := 9;
+  btExcuir.Enabled := False;
+  btExcuir.ImageIndex := 19;
+  btPesquisar.Enabled := False;
+  btPesquisar.ImageIndex := 22;
+  btEditar.Enabled := False;
+  btEditar.ImageIndex := 17;
+  btNovo.Enabled := false;
+  btNovo.ImageIndex := 20;
+  btPrimeiro.Enabled := false;
+  btPrimeiro.ImageIndex := 12;
+  btAnterior.Enabled := false;
+  btAnterior.ImageIndex := 13;
+  btProximo.Enabled := false;
+  btProximo.ImageIndex := 14;
+  btUltimo.Enabled := false;
+  btUltimo.ImageIndex := 15;
+  giCodAtual := qCad.FieldByName('CODIGO').AsInteger;
+end;
+
+procedure TfrmCadastros.qCadBeforeInsert(DataSet: TDataSet);
+begin
+  qCadBeforeEdit(qCad);
+  rdgTipo.OnChange := nil;
+end;
+
+procedure TfrmCadastros.qCadBeforePost(DataSet: TDataSet);
+begin
+  if meDtNasc.Text = '  /  /    ' then
+    qCad.FieldByName('DT_NASC').Clear
+  else if StrToDate(meDtNasc.Text) <> qCad.FieldByName('DT_NASC').AsDateTime then
+    qCad.FieldByName('DT_NASC').AsDateTime := StrToDate(meDtNasc.Text);
+
+  if meNumero.Text = '(  )      -    ' then
+    qCad.FieldByName('TELEFONE').Clear
+  else if meNumero.Text <> qCad.FieldByName('TELEFONE').AsString then
+    qCad.FieldByName('TELEFONE').AsString := meNumero.Text;
+end;
+
+procedure TfrmCadastros.rdgTipoChange(Sender: TObject);
+begin
+  if not (qCad.State in [dsEdit, dsInsert]) then
+    exit;
+
+  if not qCorpoCad.IsEmpty then
+  begin
+    if frmPrincipal.Pergunta('ATENÇÃO!' + #13#10#13#10 +
+      'Esse cadastro ja posui registros ligados'+ #13#10 +
+        'Deseja exclui-los?'+ #13#10 +
+          'Eles não poderão ser restaurados!') then
+    begin
+      qCadAux.Close;
+      qCadAux.SQL.Text := 'DELETE FROM CORPO_CADASTRO WHERE CODCADASTRO = 0'+ qCad.FieldByName('CODIGO').AsString;
+      qCadAux.ExecSQL;
+    end
+    else
+    begin
+      rdgTipo.OnChange := nil;
+      if rdgTipo.ItemIndex = 0 then
+        rdgTipo.ItemIndex := 1
+      else
+        rdgTipo.ItemIndex := 0;
+      rdgTipo.OnChange := rdgTipoChange;
+      exit;
+    end;
+  end;
+  qCorpoCad.Close;
+  if rdgTipo.ItemIndex = 0 then
+  begin
+    lbCorpoCad.Caption := '    Áreas de atuação do profissional';
+    qCorpoCad.SQL.Text := 'SELECT FUNCOES.CODIGO, FUNCOES.DESCRICAO NOME, CORPO_CADASTRO.CODIGO CODCORPO FROM CORPO_CADASTRO '+
+      ' JOIN FUNCOES ON FUNCOES.CODIGO = CORPO_CADASTRO.COD_FUNC_TERAPEUTA '+
+      ' WHERE CORPO_CADASTRO.CODCADASTRO = 0' + qCad.FieldByName('CODIGO').AsString;
+    GridCorpoCad.Columns[1].Title.Caption := 'Descrição';
+  end
+  else
+  begin
+    lbCorpoCad.Caption := '    Profissionais que atendem o paciente';
+    qCorpoCad.SQL.Text := 'SELECT CADASTRO.CODIGO, CADASTRO.NOME, CORPO_CADASTRO.CODIGO CODCORPO FROM CORPO_CADASTRO '+
+      ' JOIN CADASTRO ON CADASTRO.CODIGO = CORPO_CADASTRO.COD_FUNC_TERAPEUTA '+
+      ' WHERE CORPO_CADASTRO.CODCADASTRO = 0' + qCad.FieldByName('CODIGO').AsString;
+    GridCorpoCad.Columns[1].Title.Caption := 'Nome';
+  end;
+  qCorpoCad.Open;
+end;
+
+end.

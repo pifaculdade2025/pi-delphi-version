@@ -1,0 +1,166 @@
+unit UnCadFunc;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.ComCtrls, Vcl.ToolWin,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, Vcl.Grids, Vcl.DBGrids;
+
+type
+  TfrmCadFunc = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    Panel4: TPanel;
+    pnlBotoes: TPanel;
+    Shape1: TShape;
+    ToolBar1: TToolBar;
+    btSalvar: TToolButton;
+    btEditar: TToolButton;
+    btNovo: TToolButton;
+    btCancelar: TToolButton;
+    btExcuir: TToolButton;
+    qCadFunc: TFDQuery;
+    dsCadFunc: TDataSource;
+    GridCadFunc: TDBGrid;
+    qAuxFunc: TFDQuery;
+    qCadFuncCODIGO: TIntegerField;
+    qCadFuncDESCRICAO: TWideStringField;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormDestroy(Sender: TObject);
+    procedure qCadFuncBeforeEdit(DataSet: TDataSet);
+    procedure btSalvarClick(Sender: TObject);
+    procedure btEditarClick(Sender: TObject);
+    procedure btNovoClick(Sender: TObject);
+    procedure btCancelarClick(Sender: TObject);
+    procedure btExcuirClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure qCadFuncAfterInsert(DataSet: TDataSet);
+    procedure qCadFuncAfterCancel(DataSet: TDataSet);
+    procedure qCadFuncAfterPost(DataSet: TDataSet);
+    procedure qCadFuncAfterDelete(DataSet: TDataSet);
+    procedure qCadFuncBeforeDelete(DataSet: TDataSet);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCadFunc: TfrmCadFunc;
+
+implementation
+
+uses
+  UnPrincipal;
+
+{$R *.dfm}
+
+procedure TfrmCadFunc.btCancelarClick(Sender: TObject);
+begin
+  qCadFunc.Cancel;
+end;
+
+procedure TfrmCadFunc.btEditarClick(Sender: TObject);
+begin
+  qCadFunc.Edit;
+end;
+
+procedure TfrmCadFunc.btExcuirClick(Sender: TObject);
+begin
+  qCadFunc.Delete;
+end;
+
+procedure TfrmCadFunc.btNovoClick(Sender: TObject);
+begin
+  qCadFunc.Append;
+end;
+
+procedure TfrmCadFunc.btSalvarClick(Sender: TObject);
+begin
+  qCadFunc.Post;
+end;
+
+procedure TfrmCadFunc.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TfrmCadFunc.FormCreate(Sender: TObject);
+begin
+  qCadFunc.Active := True;
+end;
+
+procedure TfrmCadFunc.FormDestroy(Sender: TObject);
+begin
+  frmCadFunc := nil;
+end;
+
+procedure TfrmCadFunc.qCadFuncAfterCancel(DataSet: TDataSet);
+begin
+  btSalvar.Enabled := False;
+  btSalvar.ImageIndex := 16;
+  btCancelar.Enabled := False;
+  btCancelar.ImageIndex := 18;
+  btExcuir.Enabled := True;
+  btExcuir.ImageIndex := 10;
+  btEditar.Enabled := True;
+  btEditar.ImageIndex := 8;
+  btNovo.Enabled := True;
+  btNovo.ImageIndex := 11;
+  GridCadFunc.ReadOnly := True;
+end;
+
+procedure TfrmCadFunc.qCadFuncAfterDelete(DataSet: TDataSet);
+begin
+  qCadFunc.ApplyUpdates(-1);
+end;
+
+procedure TfrmCadFunc.qCadFuncAfterInsert(DataSet: TDataSet);
+begin
+  qAuxFunc.Close;
+  qAuxFunc.SQL.Text := 'SELECT MAX(CODIGO) + 1 CODIGO FROM FUNCOES';
+  qAuxFunc.Open;
+  qCadFunc.FieldByName('CODIGO').ReadOnly := False;
+  qCadFunc.FieldByName('CODIGO').AsInteger := qAuxFunc.FieldByName('CODIGO').AsInteger;
+  qCadFunc.FieldByName('CODIGO').ReadOnly := true;
+  //GridCadFunc.Columns[0].ReadOnly := true;
+end;
+
+procedure TfrmCadFunc.qCadFuncAfterPost(DataSet: TDataSet);
+begin
+  qCadFuncAfterCancel(qCadFunc);
+  qCadFunc.ApplyUpdates(-1);
+end;
+
+procedure TfrmCadFunc.qCadFuncBeforeDelete(DataSet: TDataSet);
+begin
+  qAuxFunc.Close;
+  qAuxFunc.SQL.Text := 'DELETE FROM CORPO_CADASTRO WHERE CODIGO IN ( '+
+    ' SELECT CORPO_CADASTRO.CODIGO FROM CORPO_CADASTRO '+
+    ' JOIN CADASTRO ON CADASTRO.CODIGO = CORPO_CADASTRO.CODCADASTRO '+
+    ' WHERE CADASTRO.TIPO = ''Profissional'' AND CORPO_CADASTRO.COD_FUNC_TERAPEUTA = 0' + qCadFunc.FieldByName('CODIGO').AsString +
+    ' ) ';
+  qAuxFunc.ExecSQL;
+end;
+
+procedure TfrmCadFunc.qCadFuncBeforeEdit(DataSet: TDataSet);
+begin
+  btSalvar.Enabled := True;
+  btSalvar.ImageIndex := 7;
+  btCancelar.Enabled := True;
+  btCancelar.ImageIndex := 9;
+  btExcuir.Enabled := False;
+  btExcuir.ImageIndex := 19;
+  btNovo.Enabled := false;
+  btNovo.ImageIndex := 20;
+  btEditar.Enabled := False;
+  btEditar.ImageIndex := 17;
+  GridCadFunc.ReadOnly := false;
+end;
+
+end.

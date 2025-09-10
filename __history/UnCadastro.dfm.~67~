@@ -1,0 +1,530 @@
+object frmCadastros: TfrmCadastros
+  Left = 436
+  Top = 65
+  Caption = 'Cadastros'
+  ClientHeight = 464
+  ClientWidth = 890
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = [fsBold]
+  Position = poDesigned
+  Visible = True
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  TextHeight = 15
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 890
+    Height = 464
+    Align = alClient
+    BevelOuter = bvNone
+    Caption = 'Panel1'
+    Color = clWhite
+    ParentBackground = False
+    ShowCaption = False
+    TabOrder = 0
+    ExplicitWidth = 888
+    ExplicitHeight = 456
+    object Panel2: TPanel
+      Left = 850
+      Top = 0
+      Width = 40
+      Height = 464
+      Align = alRight
+      BevelOuter = bvNone
+      Caption = 'Panel1'
+      Color = 9989246
+      ParentBackground = False
+      ShowCaption = False
+      TabOrder = 0
+      ExplicitLeft = 848
+      ExplicitHeight = 456
+    end
+    object Panel3: TPanel
+      Left = 810
+      Top = 0
+      Width = 40
+      Height = 464
+      Align = alRight
+      BevelOuter = bvNone
+      Caption = 'Panel1'
+      Color = 5881196
+      ParentBackground = False
+      ShowCaption = False
+      TabOrder = 1
+      ExplicitLeft = 808
+      ExplicitHeight = 456
+    end
+    object Panel4: TPanel
+      Left = 0
+      Top = 0
+      Width = 810
+      Height = 464
+      Align = alClient
+      BevelOuter = bvNone
+      Caption = 'Panel4'
+      ShowCaption = False
+      TabOrder = 2
+      ExplicitLeft = -6
+      object Label1: TLabel
+        Left = 15
+        Top = 88
+        Width = 44
+        Height = 17
+        Caption = 'C'#243'digo'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label2: TLabel
+        Left = 87
+        Top = 88
+        Width = 37
+        Height = 17
+        Caption = 'Nome'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label3: TLabel
+        Left = 455
+        Top = 88
+        Width = 123
+        Height = 17
+        Caption = 'Data de nascimento'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label4: TLabel
+        Left = 0
+        Top = 56
+        Width = 810
+        Height = 17
+        AutoSize = False
+        Caption = '    Informa'#231#245'es Basicas'
+        Color = 10999461
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        Transparent = False
+      end
+      object lbCorpoCad: TLabel
+        Left = 0
+        Top = 207
+        Width = 810
+        Height = 17
+        AutoSize = False
+        Caption = '    Profissionais que atendem o paciente'
+        Color = 10999461
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        Transparent = False
+      end
+      object lbRegistroProfissional: TLabel
+        Left = 239
+        Top = 140
+        Width = 128
+        Height = 17
+        Caption = 'Registro Profissional'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object pnlBotoes: TPanel
+        Left = 0
+        Top = 0
+        Width = 810
+        Height = 49
+        Align = alTop
+        BevelOuter = bvNone
+        Caption = 'pnlBotoes'
+        Color = 16181229
+        ParentBackground = False
+        ShowCaption = False
+        TabOrder = 0
+        ExplicitWidth = 808
+        object Shape1: TShape
+          Left = 0
+          Top = 48
+          Width = 810
+          Height = 1
+          Align = alBottom
+          ExplicitLeft = 180
+          ExplicitTop = 176
+          ExplicitWidth = 65
+        end
+        object ToolBar1: TToolBar
+          Left = 0
+          Top = 0
+          Width = 810
+          Height = 48
+          Align = alClient
+          ButtonHeight = 49
+          ButtonWidth = 49
+          Caption = 'ToolBar1'
+          Images = frmPrincipal.ImageList1
+          TabOrder = 0
+          ExplicitWidth = 808
+          object btSalvar: TToolButton
+            Left = 0
+            Top = 0
+            Cursor = crHandPoint
+            Hint = 'Gravar Cadastro'
+            Caption = 'btSalvar'
+            Enabled = False
+            ImageIndex = 16
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = btSalvarClick
+          end
+          object btEditar: TToolButton
+            Left = 49
+            Top = 0
+            Cursor = crHandPoint
+            Hint = 'Alterar Cadastro'
+            Caption = 'btEditar'
+            ImageIndex = 8
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = btEditarClick
+          end
+          object btNovo: TToolButton
+            Left = 98
+            Top = 0
+            Cursor = crHandPoint
+            Hint = 'Novo Cadastro'
+            Caption = 'btNovo'
+            ImageIndex = 11
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = btNovoClick
+          end
+          object btCancelar: TToolButton
+            Left = 147
+            Top = 0
+            Cursor = crHandPoint
+            Hint = 'Cancelar Cadastro'
+            Caption = 'btCancelar'
+            Enabled = False
+            ImageIndex = 18
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = btCancelarClick
+          end
+          object btExcuir: TToolButton
+            Left = 196
+            Top = 0
+            Cursor = crHandPoint
+            Hint = 'Excluir Cadastro'
+            Caption = 'btExcuir'
+            ImageIndex = 10
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = btExcuirClick
+          end
+          object ToolButton5: TToolButton
+            Left = 245
+            Top = 0
+            Width = 8
+            Caption = 'ToolButton5'
+            ImageIndex = 1
+            Style = tbsSeparator
+          end
+          object btPrimeiro: TToolButton
+            Left = 253
+            Top = 0
+            Cursor = crHandPoint
+            Hint = 'Primeiro Cadastro'
+            Caption = 'btPrimeiro'
+            ImageIndex = 3
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = btPrimeiroClick
+          end
+          object btAnterior: TToolButton
+            Left = 302
+            Top = 0
+            Cursor = crHandPoint
+            Hint = 'Cadastro Anterior'
+            Caption = 'btAnterior'
+            ImageIndex = 4
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = btAnteriorClick
+          end
+          object btProximo: TToolButton
+            Left = 351
+            Top = 0
+            Cursor = crHandPoint
+            Hint = 'Pr'#243'ximo Cadastro'
+            Caption = 'btProximo'
+            ImageIndex = 5
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = btProximoClick
+          end
+          object btUltimo: TToolButton
+            Left = 400
+            Top = 0
+            Cursor = crHandPoint
+            Hint = 'Ultimo Cadastro'
+            Caption = 'btUltimo'
+            ImageIndex = 6
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = btUltimoClick
+          end
+          object ToolButton1: TToolButton
+            Left = 449
+            Top = 0
+            Width = 8
+            Caption = 'ToolButton1'
+            ImageIndex = 7
+            Style = tbsSeparator
+          end
+          object btPesquisar: TToolButton
+            Left = 457
+            Top = 0
+            Hint = 'Pesquisar registros'
+            Caption = 'btPesquisar'
+            ImageIndex = 21
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = btPesquisarClick
+          end
+        end
+      end
+      object EditNome: TDBEdit
+        Left = 87
+        Top = 111
+        Width = 362
+        Height = 23
+        DataField = 'NOME'
+        DataSource = dsCad
+        ReadOnly = True
+        TabOrder = 1
+      end
+      object rdgTipo: TDBRadioGroup
+        Left = 15
+        Top = 140
+        Width = 218
+        Height = 46
+        Caption = 'Tipo'
+        Columns = 2
+        DataField = 'TIPO'
+        DataSource = dsCad
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        Items.Strings = (
+          'Profissional'
+          'Paciente')
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 2
+        OnChange = rdgTipoChange
+      end
+      object Panel5: TPanel
+        Left = 0
+        Top = 229
+        Width = 810
+        Height = 235
+        Align = alBottom
+        BevelOuter = bvNone
+        Caption = 'Panel5'
+        Color = 16181229
+        ParentBackground = False
+        ShowCaption = False
+        TabOrder = 3
+        ExplicitTop = 221
+        ExplicitWidth = 808
+        object Shape2: TShape
+          Left = 0
+          Top = 0
+          Width = 810
+          Height = 1
+          Align = alTop
+          Brush.Color = clBlack
+        end
+        object Shape3: TShape
+          Left = 0
+          Top = 38
+          Width = 810
+          Height = 1
+          Align = alBottom
+          Brush.Color = clBlack
+          ExplicitTop = 8
+        end
+        object GridCorpoCad: TDBGrid
+          Left = 0
+          Top = 39
+          Width = 810
+          Height = 196
+          Align = alBottom
+          DataSource = dsCorpoCad
+          ReadOnly = True
+          TabOrder = 0
+          TitleFont.Charset = DEFAULT_CHARSET
+          TitleFont.Color = clWindowText
+          TitleFont.Height = -12
+          TitleFont.Name = 'Segoe UI'
+          TitleFont.Style = [fsBold]
+          Columns = <
+            item
+              Alignment = taCenter
+              Color = 16181229
+              Expanded = False
+              FieldName = 'CODIGO'
+              Title.Caption = 'C'#243'digo'
+              Width = 146
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'NOME'
+              Title.Caption = 'Nome'
+              Width = 305
+              Visible = True
+            end>
+        end
+        object ToolBar2: TToolBar
+          Left = 0
+          Top = 1
+          Width = 810
+          Height = 37
+          Align = alClient
+          ButtonHeight = 38
+          ButtonWidth = 39
+          Caption = 'ToolBar2'
+          Images = frmPrincipal.ImageList2
+          TabOrder = 1
+          ExplicitWidth = 808
+          object btNovoCorpoCad: TToolButton
+            Left = 0
+            Top = 0
+            Cursor = crHandPoint
+            Hint = 'Novo registro'
+            Caption = 'btNovoCorpoCad'
+            ImageIndex = 1
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = btNovoCorpoCadClick
+          end
+          object btExcluirCorpoCad: TToolButton
+            Left = 39
+            Top = 0
+            Cursor = crHandPoint
+            Hint = 'Excluir item'
+            Caption = 'btExcluirCorpoCad'
+            ImageIndex = 2
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = btExcluirCorpoCadClick
+          end
+        end
+      end
+      object meDtNasc: TMaskEdit
+        Left = 455
+        Top = 111
+        Width = 175
+        Height = 23
+        EditMask = '!99/99/9999;1;_'
+        MaxLength = 10
+        ReadOnly = True
+        TabOrder = 4
+        Text = '  /  /    '
+        OnExit = meDtNascExit
+      end
+      object EditCodigo: TEdit
+        Left = 15
+        Top = 111
+        Width = 66
+        Height = 23
+        Color = 13231816
+        NumbersOnly = True
+        TabOrder = 5
+        Text = 'EditCodigo'
+        OnKeyPress = EditCodigoKeyPress
+      end
+      object EditRegistroProfissional: TDBEdit
+        Left = 239
+        Top = 163
+        Width = 210
+        Height = 23
+        DataField = 'REGISTRO_PROFISSIONAL'
+        DataSource = dsCad
+        TabOrder = 6
+      end
+    end
+  end
+  object qCad: TFDQuery
+    BeforeInsert = qCadBeforeInsert
+    AfterInsert = qCadAfterInsert
+    BeforeEdit = qCadBeforeEdit
+    BeforePost = qCadBeforePost
+    AfterPost = qCadAfterPost
+    AfterCancel = qCadAfterCancel
+    AfterScroll = qCadAfterScroll
+    CachedUpdates = True
+    Connection = frmPrincipal.FDConnection1
+    SQL.Strings = (
+      'SELECT * FROM CADASTRO')
+    Left = 840
+    Top = 56
+  end
+  object dsCad: TDataSource
+    DataSet = qCad
+    Left = 840
+    Top = 120
+  end
+  object qCorpoCad: TFDQuery
+    CachedUpdates = True
+    Connection = frmPrincipal.FDConnection1
+    Left = 840
+    Top = 184
+  end
+  object dsCorpoCad: TDataSource
+    DataSet = qCorpoCad
+    Left = 840
+    Top = 248
+  end
+  object qCadAux: TFDQuery
+    BeforePost = qCadBeforePost
+    AfterScroll = qCadAfterScroll
+    CachedUpdates = True
+    Connection = frmPrincipal.FDConnection1
+    SQL.Strings = (
+      'SELECT * FROM CADASTRO')
+    Left = 840
+    Top = 312
+  end
+end

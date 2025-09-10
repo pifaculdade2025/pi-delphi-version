@@ -10,7 +10,7 @@ uses
   FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async,
   FireDAC.Phys, FireDAC.VCLUI.Wait, FireDAC.Comp.Client, FireDAC.Phys.FB,
   FireDAC.Phys.FBDef, Vcl.ComCtrls, System.ImageList, Vcl.ImgList,
-  Vcl.Imaging.pngimage;
+  Vcl.Imaging.pngimage, Vcl.ToolWin, Vcl.StdCtrls;
 
 type
   TfrmPrincipal = class(TForm)
@@ -22,11 +22,13 @@ type
     Panel2: TPanel;
     ImageList2: TImageList;
     procedure TreeView1DblClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
     { Public declarations }
     procedure Mensagem(psMsg: String);
+    Function Pergunta(psMsg: String): boolean;
   end;
 
 var
@@ -35,9 +37,15 @@ var
 implementation
 
 uses
-  UnCadastro, UnMsg;
+  UnCadastro, UnMsg, UnPergunta, UnPesquisa, UnCadFunc;
 
 {$R *.dfm}
+
+procedure TfrmPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if not Pergunta('Deseja fechar o sistema?') then
+    abort;
+end;
 
 procedure TfrmPrincipal.Mensagem(psMsg: String);
 begin
@@ -47,12 +55,44 @@ begin
   frmMsg.ShowModal;
 end;
 
+function TfrmPrincipal.Pergunta(psMsg: String): boolean;
+begin
+  Application.CreateForm(TfrmPergunta, frmPergunta);
+  frmPergunta.MemoPergunta.Lines.Clear;
+  frmPergunta.MemoPergunta.Lines.Add(psMsg);
+  if frmPergunta.ShowModal = mrYes then
+    result := True
+  else
+    result := false;
+end;
+
 procedure TfrmPrincipal.TreeView1DblClick(Sender: TObject);
 begin
   if TreeView1.Selected.Text = 'Terapeutas / Pacientes' then
   begin
-    Application.CreateForm(TfrmCadastros, frmCadastros);
-    frmCadastros.Show;
+    if frmCadastros = nil then
+    begin
+      Application.CreateForm(TfrmCadastros, frmCadastros);
+      frmCadastros.Show;
+    end
+    else
+    begin
+      frmCadastros.BringToFront;
+      frmCadastros.SetFocus;
+    end;
+  end
+  else if TreeView1.Selected.Text = 'Funções' then
+  begin
+    if frmCadFunc = nil then
+    begin
+      Application.CreateForm(TfrmCadFunc, frmCadFunc);
+      frmCadFunc.Show;
+    end
+    else
+    begin
+      frmCadFunc.BringToFront;
+      frmCadFunc.SetFocus;
+    end;
   end;
 
 end;

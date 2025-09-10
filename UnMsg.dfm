@@ -1,8 +1,8 @@
 object frmMsg: TfrmMsg
   Left = 629
-  Top = 344
+  Top = 262
   Caption = 'Aten'#231#227'o'
-  ClientHeight = 271
+  ClientHeight = 217
   ClientWidth = 435
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,7 +18,7 @@ object frmMsg: TfrmMsg
     Left = 0
     Top = 0
     Width = 435
-    Height = 271
+    Height = 217
     Align = alClient
     BevelOuter = bvNone
     Caption = 'Panel1'
@@ -26,12 +26,11 @@ object frmMsg: TfrmMsg
     ParentBackground = False
     ShowCaption = False
     TabOrder = 0
-    ExplicitTop = 1
-    ExplicitWidth = 455
-    ExplicitHeight = 308
+    ExplicitWidth = 433
+    ExplicitHeight = 209
     object Shape1: TShape
       Left = 0
-      Top = 215
+      Top = 161
       Width = 435
       Height = 1
       Align = alBottom
@@ -43,22 +42,26 @@ object frmMsg: TfrmMsg
       Left = 16
       Top = 16
       Width = 403
-      Height = 185
+      Height = 129
       Lines.Strings = (
         'MemoMsg')
+      ReadOnly = True
       TabOrder = 0
     end
     object Panel2: TPanel
       Left = 0
-      Top = 216
+      Top = 162
       Width = 435
       Height = 55
       Align = alBottom
       BevelOuter = bvNone
       Caption = 'Panel2'
+      Color = clWhite
+      ParentBackground = False
       ShowCaption = False
       TabOrder = 1
-      ExplicitTop = 215
+      ExplicitTop = 154
+      ExplicitWidth = 433
       object Button1: TButton
         Left = 328
         Top = 6

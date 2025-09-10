@@ -1,0 +1,80 @@
+unit UnPrincipal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls,
+  Data.DBXCommon, IPPeerClient, Data.DB, Data.SqlExpr, Data.DBXInterBase,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf,
+  FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async,
+  FireDAC.Phys, FireDAC.VCLUI.Wait, FireDAC.Comp.Client, FireDAC.Phys.FB,
+  FireDAC.Phys.FBDef, Vcl.ComCtrls, System.ImageList, Vcl.ImgList,
+  Vcl.Imaging.pngimage, Vcl.ToolWin, Vcl.StdCtrls;
+
+type
+  TfrmPrincipal = class(TForm)
+    pnlPrincipal: TPanel;
+    FDConnection1: TFDConnection;
+    TreeView1: TTreeView;
+    ImageList1: TImageList;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    ImageList2: TImageList;
+    procedure TreeView1DblClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure Mensagem(psMsg: String);
+    Function Pergunta(psMsg: String): boolean;
+  end;
+
+var
+  frmPrincipal: TfrmPrincipal;
+
+implementation
+
+uses
+  UnCadastro, UnMsg, UnPergunta, UnPesquisa;
+
+{$R *.dfm}
+
+procedure TfrmPrincipal.Mensagem(psMsg: String);
+begin
+  Application.CreateForm(TfrmMsg, frmMsg);
+  frmMsg.MemoMsg.Lines.Clear;
+  frmMsg.MemoMsg.Lines.Add(psMsg);
+  frmMsg.ShowModal;
+end;
+
+function TfrmPrincipal.Pergunta(psMsg: String): boolean;
+begin
+  Application.CreateForm(TfrmPergunta, frmPergunta);
+  frmPergunta.MemoPergunta.Lines.Clear;
+  frmPergunta.MemoPergunta.Lines.Add(psMsg);
+  if frmPergunta.ShowModal = mrYes then
+    result := True
+  else
+    result := false;
+end;
+
+procedure TfrmPrincipal.TreeView1DblClick(Sender: TObject);
+begin
+  if TreeView1.Selected.Text = 'Terapeutas / Pacientes' then
+  begin
+    if frmCadastros = nil then
+    begin
+      Application.CreateForm(TfrmCadastros, frmCadastros);
+      frmCadastros.Show;
+    end
+    else
+    begin
+      frmCadastros.BringToFront;
+      frmCadastros.SetFocus;
+    end;
+  end;
+
+end;
+
+end.
